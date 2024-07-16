@@ -1,24 +1,25 @@
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <h1>Plane Scape</h1>
+      <SearchForm />
     </div>
+  );
+}
+
+function SearchForm() {
+  // This is where we will add form handling logic later
+  return (
+    <form className="search-form">
+      <label>
+        Departure Date:
+        <input type="date" id="departure-date" required />
+      </label>
+      {/* Add other form fields here similarly */}
+      <button type="submit">Search</button>
+    </form>
   );
 }
 
