@@ -1,0 +1,55 @@
+.box {
+    height: 128px;
+    width: 302px;
+  }
+  
+  .box .group {
+    height: 128px;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 306px;
+  }
+  
+  .box .overlap-group {
+    background-color: #f10000;
+    border-radius: 10px;
+    height: 128px;
+    position: relative;
+    width: 302px;
+  }
+  
+  .box .text-wrapper {
+    color: #000000;
+    font-family: "Inter-Regular", Helvetica;
+    font-size: 20px;
+    font-weight: 400;
+    left: 217px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 45px;
+    width: 61px;
+  }
+  
+  .box .arrow {
+    height: 15px;
+    left: 101px;
+    position: absolute;
+    top: 53px;
+    width: 101px;
+  }
+  
+  .box .div {
+    color: #000000;
+    font-family: "Inter-Regular", Helvetica;
+    font-size: 20px;
+    font-weight: 400;
+    left: 18px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 45px;
+    width: 54px;
+  }
+  

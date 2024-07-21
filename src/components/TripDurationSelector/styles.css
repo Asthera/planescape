@@ -1,0 +1,32 @@
+.duration-selector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.duration-selector button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  font-size: 1rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.duration-selector button:hover {
+  background-color: #45a049;
+}
+
+.duration-selector button:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.duration-selector span {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
