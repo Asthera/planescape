@@ -4,9 +4,25 @@ import './App.css';
 import SearchForm from './components/SearchForm'
 import FlightCard from './components/FlightCard';
 import TripDurationSelector from './components/TripDurationSelector';
+import PriceChart from './components/PriceChart';
 
 
 function App() {
+
+  const addDays = (date, days) => {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  };
+
+  // Initialize the flight data with 30 days of prices
+  const initialFlightData = [...Array(30)].map((_, index) => ({
+    date: addDays(new Date('2021-01-01'), index).toISOString().slice(0, 10), // Format date as YYYY-MM-DD
+    forwardPrice: 90 + Math.floor(Math.random() * 60), // Random price between 90 and 150
+    backwardPrice: 85 + Math.floor(Math.random() * 65) // Random price between 85 and 150
+  }));
+
+  const [flightData, setFlightData] = useState(initialFlightData);
 
   const [flights, setFlights] = useState([]); // Mock or fetched flight data
 
@@ -60,6 +76,7 @@ function App() {
     <div className="container">
       <h1>Plane Scape</h1>
       <SearchForm/>
+      <PriceChart flightData={flightData} />
       <TripDurationSelector
         durations={durations}
         onChange={(duration) => setSelectedDuration(duration)}

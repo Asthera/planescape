@@ -1,0 +1,49 @@
+/* Container for flight cards */
+.flights-container {
+    display: grid;
+    grid-template-columns: 1fr; /* Default to single column on small screens */
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  /* Responsive grid columns for larger screens */
+  @media (min-width: 768px) { /* Adjust breakpoint as needed */
+    .flights-container {
+      grid-template-columns: repeat(2, 1fr); /* Two columns on larger screens */
+    }
+  }
+  
+  /* Existing flight card styles */
+  .flight-card {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  .flight-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+  }
+  
+  .time, .airport, .arrow {
+    margin: 0 5px;
+  }
+  
+  .price-date {
+    margin-left: auto;
+    white-space: nowrap;
+  }
+  
+  hr {
+    border-top: 1px dashed #ccc;
+    margin: 10px 0;
+  }
+  
+  .airport {
+    min-width: 50px;
+  }
+  
