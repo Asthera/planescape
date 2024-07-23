@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import SingleSelectDropdown from '../SingleSelectDropdown';
 import "./styles.css"
 
 function SearchForm() {
+
+  const airportOptions = ['JFK', 'LAX', 'ORD', 'ATL', 'DFW', 'DEN', 'SFO', 'MIA', 'SEA', 'LAS'];
+
   const [formData, setFormData] = useState({
     departureDate: '',
     returnDate: '',
@@ -22,10 +26,29 @@ function SearchForm() {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log('Form Data Submitted:', formData);
-    // Here you would typically handle the API call
+
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    };
+
+    try {
+      const response = await fetch('http://localhost:8000/flights', requestOptions);
+      console.log(response)
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('Response from the server:', data);
+      // Additional actions based on the response, e.g., show a success message, etc.
+    } catch (error) {
+      console.error('There was a problem with the fetch operation:', error.message);
+      // Handle errors here, e.g., show an error message
+    }
   };
 
   return (
@@ -48,11 +71,19 @@ function SearchForm() {
       </label>
       <label>
         Departure Airport:
-        <input type="text" name="departureAirport" value={formData.departureAirport} onChange={handleChange} required />
+        <SingleSelectDropdown
+          options={airportOptions}
+          label="a"
+          onChange={(selected) => setFormData({ ...formData, departureAirport: selected })}
+        />
       </label>
       <label>
         Arrival Airport:
-        <input type="text" name="arrivalAirport" value={formData.arrivalAirport} onChange={handleChange} required />
+        <SingleSelectDropdown
+          options={airportOptions}
+          label="b"
+          onChange={(selected) => setFormData({ ...formData, arrivalAirport: selected })}
+        />
       </label>
       <label>
         Count of Persons:

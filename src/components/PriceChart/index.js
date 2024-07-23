@@ -10,13 +10,13 @@ function PriceChart({ flightData }) {
     labels: flightData.map(data => data.date), // Assuming 'date' is formatted appropriately
     datasets: [
       {
-        label: 'Forward Flight Prices',
+        label: 'Forward Flights',
         data: flightData.map(data => data.forwardPrice),
         borderColor: '#4caf50',
         backgroundColor: 'rgba(76, 175, 80, 0.5)',
       },
       {
-        label: 'Backward Flight Prices',
+        label: 'Backward Flights',
         data: flightData.map(data => data.backwardPrice),
         borderColor: '#2196f3',
         backgroundColor: 'rgba(33, 150, 243, 0.5)',

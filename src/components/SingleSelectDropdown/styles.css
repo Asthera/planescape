@@ -1,0 +1,28 @@
+
+
+.single-select-dropdown input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.single-select-dropdown ul {
+  position: absolute;
+  width: calc(100% - 10px);
+  border: 1px solid #ccc;
+  background: white;
+  list-style: none;
+  padding: 0;
+  margin-top: 2px;
+  z-index: 1000;
+}
+
+.single-select-dropdown ul li {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.single-select-dropdown ul li:hover {
+  background-color: #f0f0f0;
+}

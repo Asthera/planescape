@@ -1,3 +1,22 @@
+# My notes
+
+## 23.07.2024
+
+[] - TODO
+
+1. Make that data from frontend are good getted (as SearchParams) on backend - [] 
+2. and data from backend good readable on frontend - []
+3. show data on front on flight cards - []
+4. show data on front on graphs - []
+5. make that when not searching -> not showing cards, graph, - []
+             when searching -> waiting circle, - []
+             when findet -> showing cards, graph - []
+
+All maked - []
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

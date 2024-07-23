@@ -18,8 +18,8 @@ function App() {
   // Initialize the flight data with 30 days of prices
   const initialFlightData = [...Array(30)].map((_, index) => ({
     date: addDays(new Date('2021-01-01'), index).toISOString().slice(0, 10), // Format date as YYYY-MM-DD
-    forwardPrice: 90 + Math.floor(Math.random() * 60), // Random price between 90 and 150
-    backwardPrice: 85 + Math.floor(Math.random() * 65) // Random price between 85 and 150
+    forwardPrice: 10 + Math.floor(Math.random() * 60), // Random price between 90 and 150
+    backwardPrice: 15 + Math.floor(Math.random() * 65) // Random price between 85 and 150
   }));
 
   const [flightData, setFlightData] = useState(initialFlightData);
