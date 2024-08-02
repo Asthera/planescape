@@ -4,17 +4,24 @@
 
 [] - TODO
 
-1. Make that data from frontend are good getted (as SearchParams) on backend - [] 
-2. and data from backend good readable on frontend - []
-3. show data on front on flight cards - []
-4. show data on front on graphs - []
-5. make that when not searching -> not showing cards, graph, - []
+1. Make that data from frontend are good getted (as SearchParams) on backend - [V] 
+2. and data from backend good readable on frontend - [V]
+3. show data on front on flight cards - [V]
+4. Selector influence cards - [V] 
+5. show data on front on graphs - []
+6. make that when not searching -> not showing cards, graph, - []
              when searching -> waiting circle, - []
              when findet -> showing cards, graph - []
 
 All maked - []
 
 
+## 25.07.2024
+
+5. show data on front on graphs - [V]
+6. make that when not searching -> not showing cards, graph, - []
+             when searching -> waiting circle, - []
+             when findet -> showing cards, graph - []
 
 
 # Getting Started with Create React App

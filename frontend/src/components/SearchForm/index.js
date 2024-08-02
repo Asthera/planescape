@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import SingleSelectDropdown from '../SingleSelectDropdown';
 import "./styles.css"
 
-function SearchForm() {
+function SearchForm({ onFlightDataReceived }) {
 
-  const airportOptions = ['JFK', 'LAX', 'ORD', 'ATL', 'DFW', 'DEN', 'SFO', 'MIA', 'SEA', 'LAS'];
+  const airportOptions = ['JFK', 'LAX', 'ORD', 'ATL', 'DFW', 'DEN', 'SFO', 'MIA', 'SEA', 'LAS', "BER", "BUD"];
+
+  const [flightDays, setFlightDays] = useState({});
 
   const [formData, setFormData] = useState({
     departureDate: '',
@@ -44,9 +46,14 @@ function SearchForm() {
       }
       const data = await response.json();
       console.log('Response from the server:', data);
+
+
+      onFlightDataReceived(data.received_data)
+  
       // Additional actions based on the response, e.g., show a success message, etc.
     } catch (error) {
       console.error('There was a problem with the fetch operation:', error.message);
+      //setDataAvailable(false); // Optionally handle this in parent as well 
       // Handle errors here, e.g., show an error message
     }
   };
