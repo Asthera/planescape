@@ -6,7 +6,6 @@ function SearchForm({ onFlightDataReceived }) {
 
   const airportOptions = ['JFK', 'LAX', 'ORD', 'ATL', 'DFW', 'DEN', 'SFO', 'MIA', 'SEA', 'LAS', "BER", "BUD"];
 
-  const [flightDays, setFlightDays] = useState({});
 
   const [formData, setFormData] = useState({
     departureDate: '',

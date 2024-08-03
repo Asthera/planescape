@@ -6,18 +6,21 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend);
 
 function PriceChart({ dates, prices }) {
+  console.log("FROM CHART");
+  console.log(dates, prices);
+
   const data = {
     labels: dates, // Array of dates
     datasets: [
       {
         label: 'Forward Flights',
-        data: prices.map(price => price[0]), // Map the first element of each sub-array for forward flights
+        data: prices[0], // Use the array of forward flight prices directly
         borderColor: '#4caf50',
         backgroundColor: 'rgba(76, 175, 80, 0.5)',
       },
       {
         label: 'Backward Flights',
-        data: prices.map(price => price[1]), // Map the second element of each sub-array for backward flights
+        data: prices[1], // Use the array of backward flight prices directly
         borderColor: '#2196f3',
         backgroundColor: 'rgba(33, 150, 243, 0.5)',
       }

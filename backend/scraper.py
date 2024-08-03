@@ -27,7 +27,7 @@ class RyanAir:
             self.driver = uc.Chrome()
 
     def one_way_flight(self, flyout, flyin, orig, dest, adults='1', teens='0', children='0', infants='0') -> List[
-        OneWayFlight]:
+            OneWayFlight]:
         # set url
         url = f'https://www.ryanair.com/gb/en/trip/flights/select?adults=1&teens=0&children=0&infants=0&dateOut={flyout}&dateIn=&isConnectedFlight=false&discount=0&isReturn=false&promoCode=&originIata={orig}&destinationIata={dest}&tpAdults={adults}&tpTeens={teens}&tpChildren={children}&tpInfants={infants}&tpStartDate={flyout}&tpEndDate=&tpDiscount=0&tpPromoCode=&tpOriginIata={orig}&tpDestinationIata={dest}'
 
@@ -41,7 +41,8 @@ class RyanAir:
             WebDriverWait(self.driver, 10).until(
                 EC.element_to_be_clickable((By.CLASS_NAME, 'cookie-popup-with-overlay__button')))
             # click the button
-            self.driver.find_element(By.CLASS_NAME, 'cookie-popup-with-overlay__button').click()
+            self.driver.find_element(
+                By.CLASS_NAME, 'cookie-popup-with-overlay__button').click()
         except Exception as e:
             print(f'Error closing cookies: {e}')
 
@@ -51,18 +52,20 @@ class RyanAir:
         flights = self.get_flights_from_page(page, flyout, orig, dest, url, 0)
 
         # Calculate the difference in days between departure and arival dates (nights)
-        difference = (datetime.strptime(flyin, "%Y-%m-%d").date() - datetime.strptime(flyout, "%Y-%m-%d").date()).days
+        difference = (datetime.strptime(flyin, "%Y-%m-%d").date() -
+                      datetime.strptime(flyout, "%Y-%m-%d").date()).days
 
         for i in range(difference):
             if i == 0:
                 self.close_pop_xpath()
             self.go_to_next_day(i)
             page = self.driver.page_source
-            flights.extend(self.get_flights_from_page(page, flyout, orig, dest, url, i+1))
+            flights.extend(self.get_flights_from_page(
+                page, flyout, orig, dest, url, i+1))
 
         return flights
 
-    def get_cheapest_prices_per_day(self, flights: List[OneWayFlight]) -> List[float]:
+    def get_cheapest_prices_per_day(self, flights: List[OneWayFlight]) -> Dict:
         # Dictionary to hold the minimum price for each date
         min_prices = defaultdict(lambda: float('inf'))
 
@@ -73,11 +76,10 @@ class RyanAir:
             if flight.price < min_prices[departure_day]:
                 min_prices[departure_day] = flight.price
 
-        # Extract the minimum prices and sort by date
-        sorted_dates = sorted(min_prices.keys())
-        cheapest_prices = [min_prices[date] for date in sorted_dates]
+        # Sort the dictionary by keys (dates)
+        sorted_by_date = dict(sorted(min_prices.items()))
 
-        return cheapest_prices
+        return sorted_by_date
 
     def extract_float_and_string(self, input_str):
         # Regular expression to match alphabetic/currency symbols and numeric parts
@@ -111,11 +113,14 @@ class RyanAir:
 
         for id, card in enumerate(flight_cards):
             try:
-                time_elements = card.find_all('span', class_='flight-info__hour title-l-lg title-l-sm')
+                time_elements = card.find_all(
+                    'span', class_='flight-info__hour title-l-lg title-l-sm')
 
                 if time_elements and len(time_elements) >= 2:
-                    departure_flyout_times = time_elements[0].text.replace(' ', '')
-                    arrival_flyout_times = time_elements[1].text.replace(' ', '')
+                    departure_flyout_times = time_elements[0].text.replace(
+                        ' ', '')
+                    arrival_flyout_times = time_elements[1].text.replace(
+                        ' ', '')
                 else:
                     departure_flyout_times = 'N/A'
                     arrival_flyout_times = 'N/A'
@@ -128,8 +133,10 @@ class RyanAir:
                 else:
                     price = 'No flights available'
 
-                departure_datetime = datetime.strptime(flyout + ' ' + departure_flyout_times, '%Y-%m-%d %H:%M') + timedelta(days=addDays)
-                arrival_datetime = datetime.strptime(flyout + ' ' + arrival_flyout_times, '%Y-%m-%d %H:%M') + timedelta(days=addDays)
+                departure_datetime = datetime.strptime(
+                    flyout + ' ' + departure_flyout_times, '%Y-%m-%d %H:%M') + timedelta(days=addDays)
+                arrival_datetime = datetime.strptime(
+                    flyout + ' ' + arrival_flyout_times, '%Y-%m-%d %H:%M') + timedelta(days=addDays)
 
                 if arrival_datetime < departure_datetime:
                     arrival_datetime += timedelta(days=1)
@@ -139,7 +146,6 @@ class RyanAir:
                 print(currency, price)
                 price = round(self.convert_to_eur(price, currency), 2)
                 currency = "€"
-
 
                 print(currency, price)
 
@@ -190,7 +196,8 @@ class RyanAir:
             WebDriverWait(self.driver, 10).until(
                 EC.element_to_be_clickable((By.XPATH, '//*[@id="cookie-popup-with-overlay"]/div/div[3]/button[3]')))
             # click the button
-            self.driver.find_element(By.XPATH, '//*[@id="cookie-popup-with-overlay"]/div/div[3]/button[3]').click()
+            self.driver.find_element(
+                By.XPATH, '//*[@id="cookie-popup-with-overlay"]/div/div[3]/button[3]').click()
         except Exception as e:
             print(f'Error pressing buttoneey: {e}')
 
@@ -222,12 +229,9 @@ class RyanAir:
         print(self.get_cheapest_prices_per_day(backward_flights))
         b_prices = self.get_cheapest_prices_per_day(backward_flights)
 
-        prices = []
 
-        for i in range(len(b_prices)):
-            prices.append((f_prices[i], b_prices[i]))
 
-        return forward_flights, backward_flights, prices
+        return forward_flights, backward_flights, f_prices, b_prices
 
     # close the driver
     def close(self):
@@ -275,7 +279,8 @@ class RyanAir:
 
         for forward in forward_flights:
             for backward in backward_flights:
-                days_interval = (backward.departureDate - forward.arriveDate).days
+                days_interval = (backward.departureDate -
+                                 forward.arriveDate).days
 
                 if min_days <= days_interval <= max_days:
 
@@ -326,8 +331,8 @@ example_search_params = SearchParams(
 )
 
 
-## test
-#if __name__ == '__main__':
+# test
+# if __name__ == '__main__':
 #    # create the object
 #    ryanair = RyanAir(headless=True)
 #

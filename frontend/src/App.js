@@ -36,6 +36,8 @@ function App() {
 
   const [selectedDuration, setSelectedDuration] = useState(3); // Default duration
   const [durations, setDurations] = useState([]); // No initial durations
+  const [dates, setDates] = useState([]);
+  const [prices, setPrices] = useState([[], []]);  // Store two sets of prices
 
   const handleFlightDataReceived = (receivedData) => {
     console.log("APP.JS")
@@ -43,11 +45,19 @@ function App() {
     setFlightDays(receivedData[0]); // Update the state with the received data
     setDurations(Object.keys(receivedData[0]).map(day => parseInt(day)).sort((a, b) => a - b)); // Set durations based on days
     console.log(Object.keys(receivedData[0]).map(day => parseInt(day)))
+
+    // Extracting dates and prices for the chart
+    const chartDates = Object.keys(receivedData[1]);
+    const forwardPrices = chartDates.map(date => receivedData[1][date]);
+    const backwardPrices = chartDates.map(date => receivedData[2][date]);
+    setDates(chartDates);
+    setPrices([forwardPrices, backwardPrices]);
+
+
     setDataAvailable(true); // Set visibility for flight data dependent components
   };
 
-  const dates = ["2024-07-01", "2024-07-02"];
-const prices = [[500, 300], [300, 200]];
+
 
   return (
     <div className="container">

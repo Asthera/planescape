@@ -102,7 +102,7 @@ async def receive_flights(params: dict):
 
 
     # get the data
-    f_flights, b_flights, prices = ryanair.find_two_way_flights(transformed)
+    f_flights, b_flights, f_prices, b_prices = ryanair.find_two_way_flights(transformed)
     print(f_flights)
     print(b_flights)
 
@@ -110,4 +110,4 @@ async def receive_flights(params: dict):
     print(data)
     sleep(5)
 
-    return {"received_data": [data, prices]}
+    return {"received_data": [data, f_prices, b_prices]}
