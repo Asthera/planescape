@@ -33,18 +33,11 @@ class RyanAir:
 
         # get the page
         self.driver.get(url)
-        self.driver.implicitly_wait(10)
+        self.driver.implicitly_wait(5)
 
         # close cookies in button tag with cookie-popup-with-overlay__button class
-        try:
-            # wait till button with class name cookie-popup-with-overlay__button is clickable
-            WebDriverWait(self.driver, 10).until(
-                EC.element_to_be_clickable((By.CLASS_NAME, 'cookie-popup-with-overlay__button')))
-            # click the button
-            self.driver.find_element(
-                By.CLASS_NAME, 'cookie-popup-with-overlay__button').click()
-        except Exception as e:
-            print(f'Error closing cookies: {e}')
+        self.close_pop_xpath()
+
 
         # get the page source
         page = self.driver.page_source
@@ -56,8 +49,7 @@ class RyanAir:
                       datetime.strptime(flyout, "%Y-%m-%d").date()).days
 
         for i in range(difference):
-            if i == 0:
-                self.close_pop_xpath()
+            self.driver.save_screenshot(f'nowsecure{i}_{orig}.png')
             self.go_to_next_day(i)
             page = self.driver.page_source
             flights.extend(self.get_flights_from_page(
@@ -104,12 +96,15 @@ class RyanAir:
 
     def get_flights_from_page(self, page, flyout, orig, dest, url, addDays) -> List[OneWayFlight]:
 
+        print("Page" + flyout)
+
         # parse the page source
         soup = BeautifulSoup(page, 'html.parser')
 
         flights = []
         flight_cards = soup.find_all('div',
                                      class_='flight-card__header')  # Adjust the class name according to actual structure
+        print(len(flight_cards))
 
         for id, card in enumerate(flight_cards):
             try:
@@ -171,29 +166,31 @@ class RyanAir:
 
     def go_to_next_day(self, id):
 
-        self.driver.save_screenshot(f'nowsecure{id}_0.png')
+        curr_url = self.driver.current_url
 
-        try:
-            # wait till button with class name cookie-popup-with-overlay__button is clickable
-            WebDriverWait(self.driver, 10).until(
-                EC.element_to_be_clickable((By.XPATH,
-                                            '/html/body/app-root/flights-root/div/div/div/div/flights-lazy-content/flights-summary-container/flights-summary/div/div[1]/journey-container/journey/div/div[2]/div/carousel-container/carousel/div/ul/li[4]/carousel-item/button')))
+        self.driver.save_screenshot(f'before{id}_0.png')
+        while self.driver.current_url == curr_url:
+            try:
+                # wait till button with class name cookie-popup-with-overlay__button is clickable
+                WebDriverWait(self.driver, 10).until(
+                    EC.element_to_be_clickable((By.XPATH,
+                                                '/html/body/app-root/flights-root/div/div/div/div/flights-lazy-content/flights-summary-container/flights-summary/div/div[1]/journey-container/journey/div/div[2]/div/carousel-container/carousel/div/ul/li[4]/carousel-item/button')))
 
-            self.driver.save_screenshot(f'nowsecure{id}_1.png')
-            # click the button
+                #self.driver.save_screenshot(f'nowsecure{id}_1.png')
+                # click the button
 
-            self.driver.find_element(By.XPATH,
-                                     '/html/body/app-root/flights-root/div/div/div/div/flights-lazy-content/flights-summary-container/flights-summary/div/div[1]/journey-container/journey/div/div[2]/div/carousel-container/carousel/div/ul/li[4]/carousel-item/button').click()
-        except Exception as e:
-            print(f'Error pressing buttonee: {e}')
+                self.driver.find_element(By.XPATH,
+                                         '/html/body/app-root/flights-root/div/div/div/div/flights-lazy-content/flights-summary-container/flights-summary/div/div[1]/journey-container/journey/div/div[2]/div/carousel-container/carousel/div/ul/li[4]/carousel-item/button').click()
+            except Exception as e:
+                print(f'Error pressing next day: {e}')
 
-        self.driver.save_screenshot(f'nowsecure{id}_2.png')
-        time.sleep(10)
+        self.driver.save_screenshot(f'after{id}_0.png')
+        #self.driver.save_screenshot(f'nowsecure{id}_2.png')
 
     def close_pop_xpath(self):
         try:
             # wait till button with class name cookie-popup-with-overlay__button is clickable
-            WebDriverWait(self.driver, 10).until(
+            WebDriverWait(self.driver, 4).until(
                 EC.element_to_be_clickable((By.XPATH, '//*[@id="cookie-popup-with-overlay"]/div/div[3]/button[3]')))
             # click the button
             self.driver.find_element(

@@ -1,3 +1,7 @@
+.single-select-dropdown {
+  width: 100%; /* Adjust this as necessary for your layout */
+  position: relative; /* Ensures that the dropdown list can be absolutely positioned within */
+}
 
 
 .single-select-dropdown input {
@@ -9,7 +13,7 @@
 
 .single-select-dropdown ul {
   position: absolute;
-  width: calc(100% - 10px);
+  width: 100%;
   border: 1px solid #ccc;
   background: white;
   list-style: none;

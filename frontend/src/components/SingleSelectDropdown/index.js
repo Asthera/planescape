@@ -11,23 +11,28 @@ function SingleSelectDropdown({ options, label, onChange }) {
     setInputValue(value);
     if (value.length > 0) {
       const filter = options.filter(option =>
-        option.toLowerCase().startsWith(value.toLowerCase())
+        option.label && option.label.toLowerCase().startsWith(value.toLowerCase())
       );
-      setSuggestions(filter);
+      setSuggestions(filter.slice(0, 3));
     } else {
       setSuggestions([]);
     }
   };
+  
 
   // Function to handle selection
   const handleSelect = (option) => {
-    onChange(option);  // Update the parent component state
-    setInputValue(option);  // Set input to show selected option
+    console.log("hadleSelect")
+    console.log(option.value, option.label)
+    
+    onChange(option.value);  // Update the parent component state with the option's value
+    setInputValue(option.label);  // Set input to show selected option's label
     setSuggestions([]);  // Clear suggestions after selection
   };
 
   return (
     <div className="single-select-dropdown">
+      <label>{label}</label> {/* Display the label */}
       <input
         type="text"
         value={inputValue}
@@ -36,8 +41,8 @@ function SingleSelectDropdown({ options, label, onChange }) {
       />
       {suggestions.length > 0 && (
         <ul>
-          {suggestions.map(option => (
-            <li key={option} onClick={() => handleSelect(option)}>{option}</li>
+          {suggestions.map((option, index) => (
+            <li key={index} onClick={() => handleSelect(option)}>{option.label}</li>
           ))}
         </ul>
       )}

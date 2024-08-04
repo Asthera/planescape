@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
-import SingleSelectDropdown from '../SingleSelectDropdown';
-import "./styles.css"
+import React, { useState, useEffect } from 'react';
+import Papa from 'papaparse';
 
+// Importing components and styles
+import SingleSelectDropdown from '../SingleSelectDropdown';
+import "./styles.css";
 function SearchForm({ onFlightDataReceived }) {
 
   const airportOptions = ['JFK', 'LAX', 'ORD', 'ATL', 'DFW', 'DEN', 'SFO', 'MIA', 'SEA', 'LAS', "BER", "BUD"];
 
-
+  const [airports, setAirports] = useState([]);
   const [formData, setFormData] = useState({
     departureDate: '',
     returnDate: '',
@@ -26,6 +28,24 @@ function SearchForm({ onFlightDataReceived }) {
       [name]: type === 'number' ? parseFloat(value) || 0 : value
     }));
   };
+
+  useEffect(() => {
+    // Load and parse the CSV data on component mount
+    const loadAirports = async () => {
+      const response = await fetch('./airports.csv');
+      const reader = response.body.getReader();
+      const result = await reader.read(); // raw data
+      const decoder = new TextDecoder('utf-8');
+      const csv = decoder.decode(result.value); // the CSV text
+      const parsedData = Papa.parse(csv, { header: true });
+      setAirports(parsedData.data.map(airport => ({
+        label: airport.name,
+        value: airport.iata_code
+      })));
+    };
+
+    loadAirports();
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -78,16 +98,16 @@ function SearchForm({ onFlightDataReceived }) {
       <label>
         Departure Airport:
         <SingleSelectDropdown
-          options={airportOptions}
-          label="a"
+          options={airports}
+          label=""
           onChange={(selected) => setFormData({ ...formData, departureAirport: selected })}
         />
       </label>
       <label>
         Arrival Airport:
         <SingleSelectDropdown
-          options={airportOptions}
-          label="b"
+          options={airports}
+          label=""
           onChange={(selected) => setFormData({ ...formData, arrivalAirport: selected })}
         />
       </label>
