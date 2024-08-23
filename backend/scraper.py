@@ -270,18 +270,18 @@ class RyanAir:
             raise ValueError(f"Conversion error: {e}")
 
     def find_flight_propositions(self,
-                                 forward_flights: List[OneWayFlight], backward_flights: List[OneWayFlight], min_days,
-                                 max_days) -> Dict[int, List[FlightProposition]]:
+                                 forward_flights: List[OneWayFlight],
+                                 backward_flights: List[OneWayFlight],
+                                 min_days: int,
+                                 max_days: int) -> Dict[int, List[FlightProposition]]:
         flight_propositions = {}
 
         for forward in forward_flights:
             for backward in backward_flights:
-                days_interval = (backward.departureDate -
-                                 forward.arriveDate).days
+                days_interval = (backward.departureDate - forward.arriveDate).days
 
                 if min_days <= days_interval <= max_days:
-
-                    if days_interval not in flight_propositions.keys():
+                    if days_interval not in flight_propositions:
                         flight_propositions[days_interval] = []
 
                     proposition = FlightProposition(
@@ -299,6 +299,10 @@ class RyanAir:
                     )
 
                     flight_propositions[days_interval].append(proposition)
+
+        # Sort propositions in each list by the total price (ascending)
+        for days_interval, propositions in flight_propositions.items():
+            flight_propositions[days_interval] = sorted(propositions, key=lambda x: x.priceForward + x.priceBackward)
 
         return flight_propositions
 
