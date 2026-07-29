@@ -2,6 +2,11 @@
 
 A flight search tool for Ryanair round trips. You pick a departure airport, a destination, a date range, and a trip duration range — it scrapes all matching outbound and return flights, pairs them up, and shows you the cheapest combinations grouped by trip length. Prices are shown in EUR regardless of the original currency.
 
+## Example
+
+A sample search result (Kosice ↔ Prague) showing the price chart and flight cards: [Example.pdf](./Example.pdf)
+
+
 ## Architecture
 
 ```
@@ -30,6 +35,7 @@ planescape/
 3. The scraper opens the Ryanair website with `undetected-chromedriver`, navigates day by day across the requested date range, and collects all available outbound flights. Then it restarts and does the same for the return direction.
 4. `find_flight_propositions` pairs every outbound flight with every return flight whose gap falls within `tripDurationMin`–`tripDurationMax` days. Results are sorted cheapest-first.
 5. The frontend receives `[flightPropositions, forwardPricesPerDay, backwardPricesPerDay]` and renders a price chart plus flight cards for the selected trip duration.
+
 
 ## Requirements
 
