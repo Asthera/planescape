@@ -62,6 +62,56 @@ cd frontend
 npm install
 ```
 
+## Troubleshooting: Chrome / ChromeDriver version mismatch
+
+`scraper.py` uses [`undetected-chromedriver`](https://github.com/ultrafunkamsterdam/undetected-chromedriver), which auto-downloads a `chromedriver` binary matching your installed Chrome version. If Chrome auto-updates (it does this silently in the background) after that binary was cached, you'll get errors like:
+
+```
+SessionNotCreatedException: session not created: This version of ChromeDriver only supports Chrome version XXX
+```
+
+**1. Check your installed Chrome version**
+
+```bash
+# macOS
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --version
+
+# Linux
+google-chrome --version
+
+# Windows (PowerShell)
+(Get-Item "C:\Program Files\Google\Chrome\Application\chrome.exe").VersionInfo.ProductVersion
+```
+
+**2. Check the cached chromedriver version**
+
+`undetected-chromedriver` caches its downloaded driver under `~/.local/share/undetected_chromedriver` (Linux/macOS) or `%LOCALAPPDATA%\undetected_chromedriver` (Windows). You can check the binary's version directly:
+
+```bash
+~/.local/share/undetected_chromedriver/undetected_chromedriver --version
+```
+
+**3. Fix a mismatch**
+
+- Easiest fix: delete the cached driver so it re-downloads a matching one on next run:
+  ```bash
+  rm -rf ~/.local/share/undetected_chromedriver
+  ```
+- If that doesn't help, Chrome and chromedriver major versions must match exactly (e.g. Chrome 126.x needs chromedriver 126.x). Update Chrome to the latest stable release, then clear the cache again.
+- As a last resort, pin a specific major version in `scraper.py` by passing `version_main=<major_version>` to `uc.Chrome(...)`.
+
+**4. Using a non-default Chrome install (e.g. Chrome Beta)**
+
+If your cached chromedriver only matches a specific Chrome channel (e.g. Chrome Beta) and `undetected-chromedriver` can't find it automatically because it isn't at the standard install path, point it at the binary explicitly with the `CHROME_BINARY_PATH` environment variable:
+
+```bash
+# macOS example (Chrome Beta)
+export CHROME_BINARY_PATH="/Applications/Google Chrome Beta.app/Contents/MacOS/Google Chrome Beta"
+uvicorn main:app --reload
+```
+
+If unset, `scraper.py` leaves the browser path to `undetected-chromedriver`'s normal auto-detection.
+
 ## Running
 
 **Backend** (from the `backend/` directory):

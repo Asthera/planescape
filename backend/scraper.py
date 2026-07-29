@@ -11,6 +11,7 @@ from bs4 import BeautifulSoup
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import json
+import os
 import re
 from currency_converter import CurrencyConverter
 
@@ -18,13 +19,14 @@ from currency_converter import CurrencyConverter
 class RyanAir:
 
     def __init__(self, headless=True):
+        chrome_binary_path = os.environ.get('CHROME_BINARY_PATH')
         if headless:
             # config headless undetected chromedriver
             options = uc.ChromeOptions()
             options.add_argument('--headless')
-            self.driver = uc.Chrome(options=options)
+            self.driver = uc.Chrome(options=options, browser_executable_path=chrome_binary_path)
         else:
-            self.driver = uc.Chrome()
+            self.driver = uc.Chrome(browser_executable_path=chrome_binary_path)
 
     def one_way_flight(self, flyout, flyin, orig, dest, adults='1', teens='0', children='0', infants='0') -> List[
             OneWayFlight]:
