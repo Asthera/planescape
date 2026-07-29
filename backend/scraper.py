@@ -216,9 +216,12 @@ class RyanAir:
         print(self.get_cheapest_prices_per_day(forward_flights))
         f_prices = self.get_cheapest_prices_per_day(forward_flights)
         self.close()
+
+        chrome_binary_path = os.environ.get('CHROME_BINARY_PATH')
+
         options = uc.ChromeOptions()
         options.add_argument('--headless')
-        self.driver = uc.Chrome(options=options)
+        self.driver = uc.Chrome(options=options, browser_executable_path=chrome_binary_path)
 
         backward_flights = self.one_way_flight(depart,
                                                arrive,
