@@ -85,8 +85,8 @@ class RyanAir:
             number_part = match.group(2)
 
             # Handle localization of decimal separator
-            if "." not in number_part:
-                number_part = number_part.replace(',', '')
+
+            number_part = number_part.replace(',', '')
 
             # Convert to float
             float_part = float(number_part)
