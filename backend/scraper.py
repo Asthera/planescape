@@ -253,6 +253,10 @@ class RyanAir:
             'A$': 'AUD',  # Australian Dollar
             'Fr': 'CHF',  # Swiss Franc
             'R': 'ZAR',  # South African Rand
+            'Kč': 'CZK',   # Czech Koruna
+            'zł': 'PLN',   # Polish Zloty
+            'lei': 'RON',  # Romanian Leu
+            'kr': 'SEK',   # Swedish Krona (Achtung, s.u.)
             # Add more currencies as needed
         }
 
