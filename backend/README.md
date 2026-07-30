@@ -1,34 +1,59 @@
-# Project Smart-Fly
+# Planescape Backend
 
-first Functional: Find good trip with controlled dates:
+FastAPI service that powers Planescape's flight search. It scrapes Ryanair for outbound and return flights across a date range, pairs them into round trips, and returns the cheapest combinations grouped by trip duration.
 
-## TODO:
+See the [project README](../README.md) for an overview of the full system, including setup and troubleshooting instructions.
 
-1. Make class for RyanAir:
-  that take: (start date, end date, trip duration min, trip duration max, isSameReturnAirport: by default True, departure airports: list or String (if it all country), arrive airports: list or String (if it all country), countOfPerson, price min, price max )
-  and return list of classes ClearFlight
+## Tech Stack
 
-  ClearFlight: departureAirport: str, arriveAirport: str, departureAirportFinale: None or str (if isSameReturnAirport is True then it is None, otherwise str), price: float,  
-  
+- [FastAPI](https://fastapi.tiangolo.com/) — REST API
+- [Selenium](https://www.selenium.dev/) via [`undetected-chromedriver`](https://github.com/ultrafunkamsterdam/undetected-chromedriver) — Ryanair website scraping
+- [CurrencyConverter](https://pypi.org/project/CurrencyConverter/) — converts prices to EUR
 
-errors solved:
+## Project Structure
 
-1. SSl certificate not founded:
-   just gived certificate to python which used here
-2. Big trouble with undetected_chromedriver, 
-  played few hours with versions of chrome and chrome driver and one moment started working, (MacOS :) )
-3. changed some classes names in html for which founding date departure/arrival
-    from "title-l-lg title-l-sm time__hour" to "flight-info__hour title-l-lg title-l-sm"
-4. function one_way_flight was returning only one flight but more was avalable
-5. Here is error when very slow internet
-   - not solved
+```
+backend/
+├── main.py               # REST API entry point (POST /flights)
+├── scraper.py             # Selenium-based Ryanair scraper (RyanAir class)
+├── ryanairfinder.py       # Older API-based finder (kept for reference)
+├── my_types.py            # Shared dataclasses (SearchParams, FlightProposition, OneWayFlight)
+└── convert_currency.py    # EUR price conversion helper
+```
 
-## 23.07.2024
+## Requirements
 
-[] - TODO
+- Python 3.10+
+- Google Chrome installed (used by `undetected-chromedriver`)
+- [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or Anaconda
 
-1. Make that data from frontend are good getted (as SearchParams) on backend - [V]
+## Setup
 
-## 24.07.2024
+```bash
+conda create -n planescape python=3.10
+conda activate planescape
+pip install -r requirements.txt
+```
 
-for frontend send also array of cheapest flights per day (f and b) 
+## Running
+
+```bash
+uvicorn main:app --reload
+```
+
+The API runs on [http://localhost:8000](http://localhost:8000).
+
+## API
+
+### `POST /flights`
+
+Accepts a `SearchParams` payload (departure/arrival airports, date range, trip duration range, passenger count, price bounds) and returns `[flightPropositions, forwardPricesPerDay, backwardPricesPerDay]`.
+
+See [`my_types.py`](./my_types.py) for the full request/response schema.
+
+## Notes
+
+- Scraping is I/O-bound and can take several minutes for wide date ranges, since it navigates the Ryanair site day by day.
+- The scraper writes debug screenshots (`before*.png`, `after*.png`, `nowsecure*.png`) to this directory during a run. These are safe to delete and are excluded from version control.
+- `ryanairfinder.py` uses the Ryanair public API directly (faster, no browser needed), but the endpoint is unofficial and unsupported. `scraper.py` is the active implementation used by the API.
+- Chrome/ChromeDriver version mismatches are a common source of scraper failures — see the [troubleshooting section](../README.md#troubleshooting-chrome--chromedriver-version-mismatch) in the project README.

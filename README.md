@@ -7,6 +7,8 @@ A flight search tool for Ryanair round trips. You pick a departure airport, a de
 A sample search result (Kosice ↔ Prague) showing the price chart and flight cards: [Example.pdf](./Example.pdf)
 
 
+
+
 ## Architecture
 
 ```
@@ -158,9 +160,8 @@ Open `http://localhost:3000` in your browser and use the search form.
 - `ryanairfinder.py` uses the Ryanair public API directly (faster, no browser needed) but the endpoint is unofficial and may stop working. The active scraper in `scraper.py` is the one used by the API.
 - All prices are converted to EUR using the `currency-converter` library.
 
-## TODO
+## Roadmap
 
 - Optimize scraper wait times (currently uses fixed sleeps in some places)
-- Add Tor / proxy rotation to reduce the chance of being blocked
 - Support multiple departure airports in a single search
 - Add persistent storage for scraped results (avoid re-scraping the same dates)

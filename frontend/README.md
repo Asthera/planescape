@@ -1,96 +1,53 @@
-# My notes
+# Planescape Frontend
 
-## 23.07.2024
+React single-page application for Planescape, a Ryanair round-trip flight search tool. It collects search parameters from the user, sends them to the backend API, and renders the resulting flight combinations as a price chart and flight cards.
 
-[] - TODO
+See the [project README](../README.md) for an overview of the full system.
 
-1. Make that data from frontend are good getted (as SearchParams) on backend - [V] 
-2. and data from backend good readable on frontend - [V]
-3. show data on front on flight cards - [V]
-4. Selector influence cards - [V] 
-5. show data on front on graphs - []
-6. make that when not searching -> not showing cards, graph, - []
-             when searching -> waiting circle, - []
-             when findet -> showing cards, graph - []
+## Tech Stack
 
-All maked - []
+- [React 18](https://react.dev/)
+- [Chart.js](https://www.chartjs.org/) via `react-chartjs-2` for the price-per-day chart
+- [Create React App](https://create-react-app.dev/) tooling (`react-scripts`)
 
+## Project Structure
 
-## 25.07.2024
+```
+frontend/
+└── src/
+    ├── App.js
+    └── components/
+        ├── SearchForm/            # Search inputs, posts to backend
+        ├── FlightCard/            # Renders a single round-trip result
+        ├── PriceChart/            # Chart.js price-per-day chart
+        ├── TripDurationSelector/
+        └── SingleSelectDropdown/
+```
 
-5. show data on front on graphs - [V]
-6. make that when not searching -> not showing cards, graph, - []
-             when searching -> waiting circle, - []
-             when findet -> showing cards, graph - []
+## Requirements
 
+- Node.js 18+
 
-# Getting Started with Create React App
+## Setup
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+```bash
+npm install
+```
 
 ## Available Scripts
 
-In the project directory, you can run:
-
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Runs the app in development mode at [http://localhost:3000](http://localhost:3000). The page reloads automatically on changes. Requires the backend API to be running at `http://localhost:8000` (see [backend/README.md](../backend/README.md)).
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the test runner in interactive watch mode.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Builds a minified, production-ready bundle in the `build/` folder.
 
 ## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). See the [CRA documentation](https://facebook.github.io/create-react-app/docs/getting-started) for details on configuration, deployment, and troubleshooting.
